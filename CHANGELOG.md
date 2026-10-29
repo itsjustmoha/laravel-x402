@@ -6,7 +6,7 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
-## [0.1.0] - unreleased
+## [0.1.0] - 2026-10-29
 
 ### Added
 
@@ -22,3 +22,8 @@ All notable changes to this project are documented here. The format follows
   logging, Laravel HTTP client transport (works with `Http::fake()`), cache-backed lock.
 - Built-in USDC for Base Sepolia, Arbitrum Sepolia, Base, Ethereum, Polygon, Arbitrum One and
   Avalanche; guard against using the testnet-only x402.org facilitator on mainnet.
+- Pint (Laravel preset) and Larastan (level 9 for `src/`, level 8 for `tests/`) in CI, next to the
+  test matrix for PHP 8.3 and 8.4 with Laravel 12 and 13.
+
+[Unreleased]: https://github.com/itsjustmoha/laravel-x402/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/itsjustmoha/laravel-x402/releases/tag/v0.1.0
