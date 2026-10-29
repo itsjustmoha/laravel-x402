@@ -329,13 +329,12 @@ What has been verified for 0.1.0:
 - Pint (Laravel preset): clean.
 - Larastan / PHPStan (`phpstan.neon.dist`, level 9, `src/`): no errors.
 
-CI is set up to run Pint and Larastan, plus both test suites on PHP 8.3 and 8.4 with highest and lowest
-dependencies (`.github/workflows/tests.yml`).
+CI (`.github/workflows/tests.yml`) runs Pint and Larastan, plus both test suites on PHP 8.3 and 8.4
+with highest and lowest dependencies. All jobs pass. The lowest set resolves to Laravel 12.69.0,
+Testbench 10.2.0 and PHPUnit 12.5.8, so Laravel 12 is covered as well as Laravel 13.
 
 Not verified yet:
 
-- Laravel 12 / Testbench 10, PHP 8.3 with Composer dependencies, and the lowest dependency set
-  have not been run. The CI matrix covers them, but CI has not run yet.
 - No real payment: nothing was sent to `x402.org/facilitator` or any other facilitator, and no
   testnet transaction was made.
 - No real x402 client (`@x402/fetch`, Python `x402`) has talked to this package.
