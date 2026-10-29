@@ -1,0 +1,72 @@
+{
+    "name": "itsjustmoha/laravel-x402",
+    "description": "Charge AI agents per request from a Laravel API with the x402 protocol (HTTP 402 + stablecoin payments settled through a facilitator). Non-custodial.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "laravel",
+        "x402",
+        "http-402",
+        "payment-required",
+        "ai-agents",
+        "usdc",
+        "stablecoin",
+        "micropayments",
+        "middleware"
+    ],
+    "authors": [
+        {
+            "name": "itsjustmoha",
+            "homepage": "https://github.com/itsjustmoha"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "ext-json": "*",
+        "illuminate/cache": "^12.0|^13.0",
+        "illuminate/contracts": "^12.0|^13.0",
+        "illuminate/http": "^12.0|^13.0",
+        "illuminate/log": "^12.0|^13.0",
+        "illuminate/routing": "^12.0|^13.0",
+        "illuminate/support": "^12.0|^13.0",
+        "psr/log": "^2.0|^3.0"
+    },
+    "require-dev": {
+        "larastan/larastan": "^3.13",
+        "laravel/pint": "^1.32",
+        "orchestra/testbench": "^10.0|^11.0",
+        "phpunit/phpunit": "^12.0"
+    },
+    "suggest": {
+        "ext-curl": "Required only when using Core\\Http\\CurlHttpTransport outside Laravel."
+    },
+    "autoload": {
+        "psr-4": {
+            "Itsjustmoha\\X402\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Itsjustmoha\\X402\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Itsjustmoha\\X402\\Laravel\\X402ServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test:core": "phpunit -c phpunit-core.xml",
+        "lint": "pint --test",
+        "format": "pint",
+        "analyse": "phpstan analyse"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

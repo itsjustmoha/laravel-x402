@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Framework-free core suite. Runs without Composer dependencies:
+        phpunit -c phpunit-core.xml
+    Compatible with PHPUnit 9.6 and 12.
+-->
+<phpunit bootstrap="tests/bootstrap-core.php"
+         colors="true"
+         cacheResult="false"
+         failOnRisky="true"
+         failOnWarning="true"
+         beStrictAboutOutputDuringTests="true">
+    <testsuites>
+        <testsuite name="Core">
+            <directory suffix="Test.php">tests/Core</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
