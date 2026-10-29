@@ -1,0 +1,9 @@
+# tests/ is analysed one level below src/: level 9 rejects offset access on
+# mixed, which the tests do throughout when reading decoded JSON payloads.
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    level: 8
+    paths:
+        - tests

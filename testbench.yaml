@@ -1,0 +1,2 @@
+providers:
+  - Itsjustmoha\X402\Laravel\X402ServiceProvider

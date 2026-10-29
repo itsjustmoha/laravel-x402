@@ -158,19 +158,19 @@ If browsers call your API directly, expose the headers in `config/cors.php`:
 The middleware follows the default `authorization` payment flow of the specification
 (verify, then run the resource, then settle) and mirrors the official Express/FastAPI middleware.
 
-| Situation | Response | Facilitator calls | Handler runs | Charged |
-|---|---|---|---|---|
-| No payment header | `402`, `PAYMENT-REQUIRED` header, same object as JSON body, `Cache-Control: no-store` | none | no | no |
-| Header is not base64 JSON / wrong shape | `402`, error `invalid_payload` | none | no | no |
-| Payment for other terms (amount, payTo, asset, network, ...) | `402`, error `No matching payment requirements` | none | no | no |
-| Same signed payment already in flight or just settled | `402`, error `duplicate_payment` | none | no | no |
-| Facilitator says invalid | `402`, error = facilitator `invalidReason` (e.g. `insufficient_funds`) | verify | no | no |
-| Facilitator unreachable, timeout, 5xx or malformed during verify | `502 {"error":"facilitator_unavailable"}` | verify | no | no |
-| Valid payment, handler returns 2xx | handler response + `PAYMENT-RESPONSE`, `Cache-Control: private` | verify, settle | yes | **yes** |
-| Valid payment, handler returns non-2xx or throws | handler response / exception unchanged | verify | yes | no |
-| Settlement rejected by facilitator | `402`, `PAYMENT-RESPONSE` with `success:false`, handler output discarded | verify, settle | yes | no |
-| `settlement_pending` | settle is retried once (like the reference server); if still pending: `402` with the pending `PAYMENT-RESPONSE` | verify, settle x2 | yes | maybe, check the tx hash |
-| Facilitator unreachable during settle | `502 {"error":"facilitator_unavailable"}`, handler output discarded | verify, settle | yes | unknown, the payment stays locked |
+| Situation                                                        | Response                                                                                                        | Facilitator calls | Handler runs | Charged                           |
+|------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|-------------------|--------------|-----------------------------------|
+| No payment header                                                | `402`, `PAYMENT-REQUIRED` header, same object as JSON body, `Cache-Control: no-store`                           | none              | no           | no                                |
+| Header is not base64 JSON / wrong shape                          | `402`, error `invalid_payload`                                                                                  | none              | no           | no                                |
+| Payment for other terms (amount, payTo, asset, network, ...)     | `402`, error `No matching payment requirements`                                                                 | none              | no           | no                                |
+| Same signed payment already in flight or just settled            | `402`, error `duplicate_payment`                                                                                | none              | no           | no                                |
+| Facilitator says invalid                                         | `402`, error = facilitator `invalidReason` (e.g. `insufficient_funds`)                                          | verify            | no           | no                                |
+| Facilitator unreachable, timeout, 5xx or malformed during verify | `502 {"error":"facilitator_unavailable"}`                                                                       | verify            | no           | no                                |
+| Valid payment, handler returns 2xx                               | handler response + `PAYMENT-RESPONSE`, `Cache-Control: private`                                                 | verify, settle    | yes          | **yes**                           |
+| Valid payment, handler returns non-2xx or throws                 | handler response / exception unchanged                                                                          | verify            | yes          | no                                |
+| Settlement rejected by facilitator                               | `402`, `PAYMENT-RESPONSE` with `success:false`, handler output discarded                                        | verify, settle    | yes          | no                                |
+| `settlement_pending`                                             | settle is retried once (like the reference server); if still pending: `402` with the pending `PAYMENT-RESPONSE` | verify, settle x2 | yes          | maybe, check the tx hash          |
+| Facilitator unreachable during settle                            | `502 {"error":"facilitator_unavailable"}`, handler output discarded                                             | verify, settle    | yes          | unknown, the payment stays locked |
 
 Differences from the reference middleware, on purpose:
 
@@ -327,7 +327,8 @@ What has been verified for 0.1.0:
   `specs/transports-v2/http.md`, and the spec's `PAYMENT-SIGNATURE` and v1 `X-PAYMENT` examples
   are parsed correctly.
 - Pint (Laravel preset): clean.
-- Larastan / PHPStan (`phpstan.neon.dist`, level 9, `src/`): no errors.
+- Larastan / PHPStan: no errors in `src/` at level 9 (`phpstan.neon.dist`) or in `tests/` at
+  level 8 (`phpstan-tests.neon.dist`).
 
 CI (`.github/workflows/tests.yml`) runs Pint and Larastan, plus both test suites on PHP 8.3 and 8.4
 with highest and lowest dependencies. All jobs pass. The lowest set resolves to Laravel 12.69.0,
@@ -339,7 +340,8 @@ Not verified yet:
   testnet transaction was made.
 - No real x402 client (`@x402/fetch`, Python `x402`) has talked to this package.
 - Coinbase CDP authentication.
-- `tests/` is not covered by Larastan (level 9 reports issues around Testbench's nullable `$app`).
+- `tests/` is analysed at level 8, not 9: level 9 rejects the nested lookups on decoded JSON
+  that the tests use throughout.
 
 ## Specification sources
 

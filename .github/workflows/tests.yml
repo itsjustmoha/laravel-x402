@@ -33,6 +33,9 @@ jobs:
       - name: Larastan
         run: vendor/bin/phpstan analyse --no-progress --error-format=github
 
+      - name: Larastan (tests)
+        run: vendor/bin/phpstan analyse -c phpstan-tests.neon.dist --no-progress --error-format=github
+
   tests:
     name: PHP ${{ matrix.php }} - ${{ matrix.dependencies }}
     runs-on: ubuntu-latest

@@ -6,4 +6,7 @@
 /.gitignore         export-ignore
 /phpunit.xml.dist   export-ignore
 /phpunit-core.xml   export-ignore
+/phpstan.neon.dist  export-ignore
+/phpstan-tests.neon.dist export-ignore
+/testbench.yaml     export-ignore
 /CONTRIBUTING.md    export-ignore

@@ -62,7 +62,10 @@
         "test:core": "phpunit -c phpunit-core.xml",
         "lint": "pint --test",
         "format": "pint",
-        "analyse": "phpstan analyse"
+        "analyse": [
+            "phpstan analyse",
+            "phpstan analyse -c phpstan-tests.neon.dist"
+        ]
     },
     "config": {
         "sort-packages": true

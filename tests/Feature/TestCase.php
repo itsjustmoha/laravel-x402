@@ -13,6 +13,7 @@ use Itsjustmoha\X402\Tests\Core\Support\Fixtures;
 use Itsjustmoha\X402\Tests\Core\Support\SpecExamples;
 use Orchestra\Testbench\TestCase as Orchestra;
 use RuntimeException;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class TestCase extends Orchestra
 {
@@ -110,6 +111,7 @@ abstract class TestCase extends Orchestra
     }
 
     /**
+     * @param  TestResponse<Response>  $response
      * @return array<string, mixed>
      */
     protected static function decodeHeader(TestResponse $response, string $name): array

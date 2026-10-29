@@ -7,7 +7,9 @@ declare(strict_types=1);
  * It enforces the request shape of specs/x402-specification-v2.md section 7.
  */
 
-$path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
+$requestUri = $_SERVER['REQUEST_URI'] ?? '/';
+$path = parse_url(is_string($requestUri) ? $requestUri : '/', PHP_URL_PATH);
+$path = is_string($path) ? $path : '/';
 $body = (string) file_get_contents('php://input');
 
 header('Content-Type: application/json');

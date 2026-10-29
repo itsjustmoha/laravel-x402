@@ -261,7 +261,7 @@ final class RequirePaymentTest extends TestCase
     public function test_bazaar_discovery_metadata_is_advertised(): void
     {
         Http::fake();
-        $this->app['config']->set('x402.service', ['name' => 'Weather API', 'tags' => ['weather'], 'icon_url' => 'https://localhost/icon.png']);
+        config(['x402.service' => ['name' => 'Weather API', 'tags' => ['weather'], 'icon_url' => 'https://localhost/icon.png']]);
 
         $required = self::decodeHeader($this->getJson('/weather'), 'PAYMENT-REQUIRED');
 
@@ -280,7 +280,7 @@ final class RequirePaymentTest extends TestCase
 
     public function test_v1_clients_can_pay_when_compatibility_is_enabled(): void
     {
-        $this->app['config']->set('x402.v1_compatibility', true);
+        config(['x402.v1_compatibility' => true]);
         Http::fake([
             self::FACILITATOR.'/verify' => Http::response(Fixtures::verifyValid()),
             self::FACILITATOR.'/settle' => Http::response(['success' => true, 'transaction' => Fixtures::TX_HASH, 'network' => 'base-sepolia', 'payer' => SpecExamples::PAYER]),
@@ -312,7 +312,7 @@ final class RequirePaymentTest extends TestCase
 
     public function test_auth_headers_provider_is_used_for_facilitator_calls(): void
     {
-        $this->app['config']->set('x402.facilitator.auth', StaticAuthHeaders::class);
+        config(['x402.facilitator.auth' => StaticAuthHeaders::class]);
         Http::fake([
             self::FACILITATOR.'/verify' => Http::response(Fixtures::verifyValid()),
             self::FACILITATOR.'/settle' => Http::response(Fixtures::settleSuccess()),
@@ -326,7 +326,7 @@ final class RequirePaymentTest extends TestCase
 
     public function test_missing_pay_to_is_a_configuration_error(): void
     {
-        $this->app['config']->set('x402.pay_to', null);
+        config(['x402.pay_to' => null]);
         $this->withoutExceptionHandling();
 
         $this->expectException(InvalidConfiguration::class);
@@ -337,7 +337,7 @@ final class RequirePaymentTest extends TestCase
 
     public function test_mainnet_network_with_the_testnet_facilitator_is_a_configuration_error(): void
     {
-        $this->app['config']->set('x402.facilitator.url', 'https://x402.org/facilitator');
+        config(['x402.facilitator.url' => 'https://x402.org/facilitator']);
         $this->withoutExceptionHandling();
 
         $this->expectException(InvalidConfiguration::class);
