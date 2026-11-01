@@ -27,3 +27,18 @@ Core tests must keep working with PHPUnit 9.6 and 12: name test methods `test...
 - One topic per pull request, with tests.
 - Add an entry under "Unreleased" in `CHANGELOG.md`.
 - Security issues: please report privately via GitHub security advisories, not in public issues.
+
+## Releasing
+
+Releases are tagged by `.github/workflows/release.yml`; do not push version tags by hand.
+
+1. In `CHANGELOG.md`, move the "Unreleased" entries into a new section
+   `## [x.y.z] - YYYY-MM-DD` directly below `## [Unreleased]`, and add its compare link at the
+   bottom.
+2. Commit and push to `main`.
+3. When the tests workflow passes for that commit, the release workflow tags it `vx.y.z` and
+   publishes a GitHub release with that section as notes. Versions with a suffix
+   (`1.0.0-beta.1`) become pre-releases. Packagist picks up the tag through its webhook.
+
+The workflow does nothing when the newest dated version is already tagged, and fails when it is
+older than the latest tag.
