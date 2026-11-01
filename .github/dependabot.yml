@@ -1,0 +1,21 @@
+version: 2
+
+updates:
+  # composer.lock is not committed, so these PRs only widen composer.json
+  # constraints when a new major release falls outside them.
+  - package-ecosystem: composer
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      dev-dependencies:
+        dependency-type: development
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      github-actions:
+        patterns:
+          - "*"
