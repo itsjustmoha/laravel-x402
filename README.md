@@ -1,5 +1,11 @@
 # laravel-x402
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/itsjustmoha/laravel-x402.svg)](https://packagist.org/packages/itsjustmoha/laravel-x402)
+[![Total Downloads](https://img.shields.io/packagist/dt/itsjustmoha/laravel-x402.svg)](https://packagist.org/packages/itsjustmoha/laravel-x402)
+[![PHP Version](https://img.shields.io/packagist/dependency-v/itsjustmoha/laravel-x402/php.svg)](https://packagist.org/packages/itsjustmoha/laravel-x402)
+[![Tests](https://github.com/itsjustmoha/laravel-x402/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/itsjustmoha/laravel-x402/actions/workflows/tests.yml)
+[![License](https://img.shields.io/packagist/l/itsjustmoha/laravel-x402.svg)](LICENSE)
+
 Charge AI agents (and any other HTTP client) per request from a Laravel API using the
 [x402 protocol](https://github.com/coinbase/x402): HTTP `402 Payment Required` plus
 stablecoin payments that a third-party **facilitator** verifies and settles on a chain.
@@ -16,7 +22,7 @@ stablecoin payments that a third-party **facilitator** verifies and settles on a
 
 x402 is an open protocol that uses the HTTP `402 Payment Required` status code to tell a
 client the price of a resource in machine-readable form. The client (often an AI agent with
-a wallet) signs a payment authorization, for example an EIP-3009 USDC transfer, and retries the
+a wallet) signs a payment authorization, for example, an EIP-3009 USDC transfer, and retries the
 request with that authorization in a header. The server asks a facilitator to verify the
 authorization, serves the response, and then has the facilitator settle the transfer on chain,
 straight from the payer to your wallet.
@@ -189,11 +195,11 @@ Streamed responses (`StreamedResponse`, file downloads) are settled before the b
 
 ## Events and logging
 
-| Event | When | Useful fields |
-|---|---|---|
-| `Itsjustmoha\X402\Laravel\Events\PaymentVerified` | facilitator accepted the payment; handler runs next | `requirements`, `payer`, `version` |
-| `Itsjustmoha\X402\Laravel\Events\PaymentSettled` | money moved | `settlement->transaction`, `settlement->network`, `requirements->amount` |
-| `Itsjustmoha\X402\Laravel\Events\PaymentFailed` | a presented payment did not unlock the resource | `stage` (`verify`/`settle`), `reason`, `status`, `payer` |
+| Event                                             | When                                                | Useful fields                                                            |
+|---------------------------------------------------|-----------------------------------------------------|--------------------------------------------------------------------------|
+| `Itsjustmoha\X402\Laravel\Events\PaymentVerified` | facilitator accepted the payment; handler runs next | `requirements`, `payer`, `version`                                       |
+| `Itsjustmoha\X402\Laravel\Events\PaymentSettled`  | money moved                                         | `settlement->transaction`, `settlement->network`, `requirements->amount` |
+| `Itsjustmoha\X402\Laravel\Events\PaymentFailed`   | a presented payment did not unlock the resource     | `stage` (`verify`/`settle`), `reason`, `status`, `payer`                 |
 
 ```php
 Event::listen(PaymentSettled::class, function (PaymentSettled $event) {
@@ -236,15 +242,15 @@ Use `(object) []` for empty JSON objects inside your own schemas.
 
 ## Protocol versions
 
-| | x402 v2 (default) | x402 v1 (opt-in: `X402_V1_COMPATIBILITY=true`) |
-|---|---|---|
-| Requirements | `PAYMENT-REQUIRED` header (base64) + JSON body | JSON body `{x402Version:1, accepts:[...]}`; the v2 header is still sent |
-| Client payment header | `PAYMENT-SIGNATURE` | `X-PAYMENT` |
-| Settlement header | `PAYMENT-RESPONSE` | `X-PAYMENT-RESPONSE` |
-| Networks | CAIP-2 (`eip155:84532`) | legacy names (`base-sepolia`) |
-| Amount field | `amount` | `maxAmountRequired` |
-| Matching | full requirements must match (`extra` may only be extended) | scheme + network |
-| Discovery | `extensions.bazaar` | `outputSchema` (best effort) |
+|                       | x402 v2 (default)                                           | x402 v1 (opt-in: `X402_V1_COMPATIBILITY=true`)                          |
+|-----------------------|-------------------------------------------------------------|-------------------------------------------------------------------------|
+| Requirements          | `PAYMENT-REQUIRED` header (base64) + JSON body              | JSON body `{x402Version:1, accepts:[...]}`; the v2 header is still sent |
+| Client payment header | `PAYMENT-SIGNATURE`                                         | `X-PAYMENT`                                                             |
+| Settlement header     | `PAYMENT-RESPONSE`                                          | `X-PAYMENT-RESPONSE`                                                    |
+| Networks              | CAIP-2 (`eip155:84532`)                                     | legacy names (`base-sepolia`)                                           |
+| Amount field          | `amount`                                                    | `maxAmountRequired`                                                     |
+| Matching              | full requirements must match (`extra` may only be extended) | scheme + network                                                        |
+| Discovery             | `extensions.bazaar`                                         | `outputSchema` (best effort)                                            |
 
 The version is taken from the payload's `x402Version`; `PAYMENT-SIGNATURE` wins if both headers
 are present. With v1 compatibility off (the default, like the official v2 servers), v1 payments get
@@ -312,7 +318,7 @@ large discovery schemas. Raise `fastcgi_buffer_size` / `proxy_buffer_size` (e.g.
 
 What has been verified for 0.1.0:
 
-- `composer install` resolves on PHP 8.4.27 with Laravel 13.39.0, Testbench 11.3.0 and
+- `composer install` resolves on PHP 8.4.27 with Laravel 13.39.0, Testbench 11.3.0, and
   PHPUnit 12.5.42.
 - Full suite (`vendor/bin/phpunit`): 97 tests, 688 assertions, all passing. That includes the
   Testbench feature tests in `tests/Feature` (middleware, `->paid()` routes, cache lock, events,
@@ -331,8 +337,8 @@ What has been verified for 0.1.0:
   level 8 (`phpstan-tests.neon.dist`).
 
 CI (`.github/workflows/tests.yml`) runs Pint and Larastan, plus both test suites on PHP 8.3 and 8.4
-with highest and lowest dependencies. All jobs pass. The lowest set resolves to Laravel 12.69.0,
-Testbench 10.2.0 and PHPUnit 12.5.8, so Laravel 12 is covered as well as Laravel 13.
+with the highest and lowest dependencies. All jobs pass. The lowest set resolves to Laravel 12.69.0,
+Testbench 10.2.0, and PHPUnit 12.5.8, so Laravel 12 is covered as well as Laravel 13.
 
 Not verified yet:
 
@@ -340,7 +346,7 @@ Not verified yet:
   testnet transaction was made.
 - No real x402 client (`@x402/fetch`, Python `x402`) has talked to this package.
 - Coinbase CDP authentication.
-- `tests/` is analysed at level 8, not 9: level 9 rejects the nested lookups on decoded JSON
+- `tests/` is analyzed at level 8, not 9: level 9 rejects the nested lookups on decoded JSON
   that the tests use throughout.
 
 ## Specification sources
